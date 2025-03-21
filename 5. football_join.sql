@@ -1,13 +1,13 @@
 USE football;
 
--- Сгенерируем результаты чемпионата
--- Предположем, что в одном матче забивается не более 5 голов
+-- РЎРіРµРЅРµСЂРёСЂСѓРµРј СЂРµР·СѓР»СЊС‚Р°С‚С‹ С‡РµРјРїРёРѕРЅР°С‚Р°
+-- РџСЂРµРґРїРѕР»РѕР¶РµРј, С‡С‚Рѕ РІ РѕРґРЅРѕРј РјР°С‚С‡Рµ Р·Р°Р±РёРІР°РµС‚СЃСЏ РЅРµ Р±РѕР»РµРµ 5 РіРѕР»РѕРІ
 
 UPDATE games SET
  	goals_o = FLOOR(0 + RAND()*6),
  	goals_g = FLOOR(0 + RAND()*6);
  
--- Таблица бомбардиров
+-- РўР°Р±Р»РёС†Р° Р±РѕРјР±Р°СЂРґРёСЂРѕРІ
 SELECT
 	CONCAT(players.last_name, ' ', players.first_name) Name,
 	clubs.name Club,
@@ -19,7 +19,7 @@ GROUP BY player_id
 ORDER BY total
 DESC LIMIT 10;
 
--- Таблица самых грубых игроков чемпионата
+-- РўР°Р±Р»РёС†Р° СЃР°РјС‹С… РіСЂСѓР±С‹С… РёРіСЂРѕРєРѕРІ С‡РµРјРїРёРѕРЅР°С‚Р°
 SELECT
 	CONCAT(players.last_name, ' ', players.first_name) Name,
 	clubs.name Club,
@@ -31,8 +31,8 @@ GROUP BY player_id
 ORDER BY red_card
 DESC LIMIT 10;
 
--- Результаты 5го тура English_Premier_League
--- Вложенный:
+-- Р РµР·СѓР»СЊС‚Р°С‚С‹ 5РіРѕ С‚СѓСЂР° English_Premier_League
+-- Р’Р»РѕР¶РµРЅРЅС‹Р№:
 SELECT 
 	(SELECT clubs.name FROM clubs WHERE clubs.id = club_owner_id) AS host,
 	goals_o '-', goals_g '-',	 
@@ -40,7 +40,7 @@ SELECT
 FROM games
 WHERE chemp_id = 1 AND tour = 5;
 
--- Результаты 38го тура English_Premier_League
+-- Р РµР·СѓР»СЊС‚Р°С‚С‹ 38РіРѕ С‚СѓСЂР° English_Premier_League
 -- JOIN:
 SELECT clubs_owner.name host, goals_o '-', goals_g '-', clubs_guest.name guest
 FROM games
