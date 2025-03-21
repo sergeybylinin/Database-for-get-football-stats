@@ -1,128 +1,128 @@
--- База данных "футбол" состоит из 9 таблиц (страны, клубы, игроки, профили, позиции, амплуа, чемпионаты, игры и события в матчах).
--- База данных "футбол" предназначена для получения данных футбольной статики.
+-- Р‘Р°Р·Р° РґР°РЅРЅС‹С… "С„СѓС‚Р±РѕР»" СЃРѕСЃС‚РѕРёС‚ РёР· 9 С‚Р°Р±Р»РёС† (СЃС‚СЂР°РЅС‹, РєР»СѓР±С‹, РёРіСЂРѕРєРё, РїСЂРѕС„РёР»Рё, РїРѕР·РёС†РёРё, Р°РјРїР»СѓР°, С‡РµРјРїРёРѕРЅР°С‚С‹, РёРіСЂС‹ Рё СЃРѕР±С‹С‚РёСЏ РІ РјР°С‚С‡Р°С…).
+-- Р‘Р°Р·Р° РґР°РЅРЅС‹С… "С„СѓС‚Р±РѕР»" РїСЂРµРґРЅР°Р·РЅР°С‡РµРЅР° РґР»СЏ РїРѕР»СѓС‡РµРЅРёСЏ РґР°РЅРЅС‹С… С„СѓС‚Р±РѕР»СЊРЅРѕР№ СЃС‚Р°С‚РёРєРё.
 
--- Создаём БД
+-- РЎРѕР·РґР°С‘Рј Р‘Р”
 DROP DATABASE IF EXISTS football;
 CREATE DATABASE football;
 
--- Делаем её текущей
+-- Р”РµР»Р°РµРј РµС‘ С‚РµРєСѓС‰РµР№
 USE football;
 
 -- -----------------1-----------------
--- Создаем таблицу клубов
+-- РЎРѕР·РґР°РµРј С‚Р°Р±Р»РёС†Сѓ РєР»СѓР±РѕРІ
 DROP TABLE IF EXISTS clubs;
 CREATE TABLE clubs (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'Идентификатор строки',
-	name VARCHAR(255) NOT NULL COMMENT 'Название команды',
-	sity VARCHAR(255) NOT NULL COMMENT 'Город',
-	country_id TINYINT UNSIGNED NOT NULL COMMENT 'Ссылка на страну',
-	budget INT UNSIGNED NOT NULL DEFAULT 0 COMMENT 'Бюджет клуба',
-	count_ INT UNSIGNED NOT NULL DEFAULT 0 COMMENT 'Стоимость клуба', -- Общая стоимость всех футболистов + бюджет
-	avg_skills TINYINT UNSIGNED NOT NULL DEFAULT 10 COMMENT 'Средний навык игроков клуба',
-	created_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания строки',
-	updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время обновления строки'
-) COMMENT 'Футбольные клубы';
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'РРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ СЃС‚СЂРѕРєРё',
+	name VARCHAR(255) NOT NULL COMMENT 'РќР°Р·РІР°РЅРёРµ РєРѕРјР°РЅРґС‹',
+	sity VARCHAR(255) NOT NULL COMMENT 'Р“РѕСЂРѕРґ',
+	country_id TINYINT UNSIGNED NOT NULL COMMENT 'РЎСЃС‹Р»РєР° РЅР° СЃС‚СЂР°РЅСѓ',
+	budget INT UNSIGNED NOT NULL DEFAULT 0 COMMENT 'Р‘СЋРґР¶РµС‚ РєР»СѓР±Р°',
+	count_ INT UNSIGNED NOT NULL DEFAULT 0 COMMENT 'РЎС‚РѕРёРјРѕСЃС‚СЊ РєР»СѓР±Р°', -- РћР±С‰Р°СЏ СЃС‚РѕРёРјРѕСЃС‚СЊ РІСЃРµС… С„СѓС‚Р±РѕР»РёСЃС‚РѕРІ + Р±СЋРґР¶РµС‚
+	avg_skills TINYINT UNSIGNED NOT NULL DEFAULT 10 COMMENT 'РЎСЂРµРґРЅРёР№ РЅР°РІС‹Рє РёРіСЂРѕРєРѕРІ РєР»СѓР±Р°',
+	created_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Р’СЂРµРјСЏ СЃРѕР·РґР°РЅРёСЏ СЃС‚СЂРѕРєРё',
+	updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Р’СЂРµРјСЏ РѕР±РЅРѕРІР»РµРЅРёСЏ СЃС‚СЂРѕРєРё'
+) COMMENT 'Р¤СѓС‚Р±РѕР»СЊРЅС‹Рµ РєР»СѓР±С‹';
 
 -- -----------------2-----------------
--- Создаем таблицу игроков
+-- РЎРѕР·РґР°РµРј С‚Р°Р±Р»РёС†Сѓ РёРіСЂРѕРєРѕРІ
 DROP TABLE IF EXISTS players;
 CREATE TABLE players (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'Идентификатор строки',
-	first_name VARCHAR(255) NOT NULL COMMENT 'Имя игрока',
-	last_name VARCHAR(255) NOT NULL COMMENT 'Фамилия игрока',
-	country_id TINYINT UNSIGNED NOT NULL COMMENT 'Ссылка на страну',
-	club_id INT UNSIGNED NOT NULL COMMENT 'Ссылка на клуб',
-	pos_id TINYINT UNSIGNED NOT NULL COMMENT 'Ссылка на позицию',
-	amplua_id TINYINT UNSIGNED NOT NULL COMMENT 'Ссылка на амплуа',
-	skill TINYINT UNSIGNED NOT NULL DEFAULT 10 COMMENT 'Общий навык', -- от 1 до 100
-	count_ INT UNSIGNED NOT NULL DEFAULT 0 COMMENT 'Стоимость игока',
-	created_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания строки',
-	updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время обновления строки'
-) COMMENT 'Игроки';
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'РРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ СЃС‚СЂРѕРєРё',
+	first_name VARCHAR(255) NOT NULL COMMENT 'РРјСЏ РёРіСЂРѕРєР°',
+	last_name VARCHAR(255) NOT NULL COMMENT 'Р¤Р°РјРёР»РёСЏ РёРіСЂРѕРєР°',
+	country_id TINYINT UNSIGNED NOT NULL COMMENT 'РЎСЃС‹Р»РєР° РЅР° СЃС‚СЂР°РЅСѓ',
+	club_id INT UNSIGNED NOT NULL COMMENT 'РЎСЃС‹Р»РєР° РЅР° РєР»СѓР±',
+	pos_id TINYINT UNSIGNED NOT NULL COMMENT 'РЎСЃС‹Р»РєР° РЅР° РїРѕР·РёС†РёСЋ',
+	amplua_id TINYINT UNSIGNED NOT NULL COMMENT 'РЎСЃС‹Р»РєР° РЅР° Р°РјРїР»СѓР°',
+	skill TINYINT UNSIGNED NOT NULL DEFAULT 10 COMMENT 'РћР±С‰РёР№ РЅР°РІС‹Рє', -- РѕС‚ 1 РґРѕ 100
+	count_ INT UNSIGNED NOT NULL DEFAULT 0 COMMENT 'РЎС‚РѕРёРјРѕСЃС‚СЊ РёРіРѕРєР°',
+	created_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Р’СЂРµРјСЏ СЃРѕР·РґР°РЅРёСЏ СЃС‚СЂРѕРєРё',
+	updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Р’СЂРµРјСЏ РѕР±РЅРѕРІР»РµРЅРёСЏ СЃС‚СЂРѕРєРё'
+) COMMENT 'РРіСЂРѕРєРё';
 	
 -- -----------------3-----------------
--- Таблица профилей
+-- РўР°Р±Р»РёС†Р° РїСЂРѕС„РёР»РµР№
 DROP TABLE IF EXISTS profiles;
 CREATE TABLE profiles (
-	player_id INT UNSIGNED NOT NULL PRIMARY KEY COMMENT 'Ссылка на пользователя',
-	working_leg BOOL DEFAULT 1 COMMENT 'Рабочая нога',-- 1-правая, 0-левая
-	pac TINYINT UNSIGNED NOT NULL DEFAULT 10 COMMENT 'Скорость',-- от 1 до 100
-	sho TINYINT UNSIGNED NOT NULL DEFAULT 10 COMMENT 'Удар',-- от 1 до 100
-	pas TINYINT UNSIGNED NOT NULL DEFAULT 10 COMMENT 'Передачи',-- от 1 до 100
-	dri TINYINT UNSIGNED NOT NULL DEFAULT 10 COMMENT 'Дриблинг',-- от 1 до 100
-	def TINYINT UNSIGNED NOT NULL DEFAULT 10 COMMENT 'Защита',-- от 1 до 100
-	phy TINYINT UNSIGNED NOT NULL DEFAULT 10 COMMENT 'Физика',-- от 1 до 100
-	created_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания строки',
-	updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время обновления строки'
-) COMMENT 'Профили';
+	player_id INT UNSIGNED NOT NULL PRIMARY KEY COMMENT 'РЎСЃС‹Р»РєР° РЅР° РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ',
+	working_leg BOOL DEFAULT 1 COMMENT 'Р Р°Р±РѕС‡Р°СЏ РЅРѕРіР°',-- 1-РїСЂР°РІР°СЏ, 0-Р»РµРІР°СЏ
+	pac TINYINT UNSIGNED NOT NULL DEFAULT 10 COMMENT 'РЎРєРѕСЂРѕСЃС‚СЊ',-- РѕС‚ 1 РґРѕ 100
+	sho TINYINT UNSIGNED NOT NULL DEFAULT 10 COMMENT 'РЈРґР°СЂ',-- РѕС‚ 1 РґРѕ 100
+	pas TINYINT UNSIGNED NOT NULL DEFAULT 10 COMMENT 'РџРµСЂРµРґР°С‡Рё',-- РѕС‚ 1 РґРѕ 100
+	dri TINYINT UNSIGNED NOT NULL DEFAULT 10 COMMENT 'Р”СЂРёР±Р»РёРЅРі',-- РѕС‚ 1 РґРѕ 100
+	def TINYINT UNSIGNED NOT NULL DEFAULT 10 COMMENT 'Р—Р°С‰РёС‚Р°',-- РѕС‚ 1 РґРѕ 100
+	phy TINYINT UNSIGNED NOT NULL DEFAULT 10 COMMENT 'Р¤РёР·РёРєР°',-- РѕС‚ 1 РґРѕ 100
+	created_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Р’СЂРµРјСЏ СЃРѕР·РґР°РЅРёСЏ СЃС‚СЂРѕРєРё',
+	updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Р’СЂРµРјСЏ РѕР±РЅРѕРІР»РµРЅРёСЏ СЃС‚СЂРѕРєРё'
+) COMMENT 'РџСЂРѕС„РёР»Рё';
 
 -- -----------------4-----------------
--- Создаем таблицу национальных государств
+-- РЎРѕР·РґР°РµРј С‚Р°Р±Р»РёС†Сѓ РЅР°С†РёРѕРЅР°Р»СЊРЅС‹С… РіРѕСЃСѓРґР°СЂСЃС‚РІ
 DROP TABLE IF EXISTS countrys;
 CREATE TABLE countrys (
-	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'Идентификатор строки',
-	name VARCHAR(255) NOT NULL COMMENT 'Название страны',
-	reduction_name	CHAR(3) NOT NULL COMMENT 'Сокращенное название страны',
-	created_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания строки',
-	updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время обновления строки'
-) COMMENT 'Страны';
+	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'РРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ СЃС‚СЂРѕРєРё',
+	name VARCHAR(255) NOT NULL COMMENT 'РќР°Р·РІР°РЅРёРµ СЃС‚СЂР°РЅС‹',
+	reduction_name	CHAR(3) NOT NULL COMMENT 'РЎРѕРєСЂР°С‰РµРЅРЅРѕРµ РЅР°Р·РІР°РЅРёРµ СЃС‚СЂР°РЅС‹',
+	created_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Р’СЂРµРјСЏ СЃРѕР·РґР°РЅРёСЏ СЃС‚СЂРѕРєРё',
+	updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Р’СЂРµРјСЏ РѕР±РЅРѕРІР»РµРЅРёСЏ СЃС‚СЂРѕРєРё'
+) COMMENT 'РЎС‚СЂР°РЅС‹';
 
 -- -----------------5-----------------
--- Создаем таблицу игровых позиций
+-- РЎРѕР·РґР°РµРј С‚Р°Р±Р»РёС†Сѓ РёРіСЂРѕРІС‹С… РїРѕР·РёС†РёР№
 DROP TABLE IF EXISTS positions;
 CREATE TABLE positions (
-	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'Идентификатор строки',
-	name VARCHAR(255) NOT NULL COMMENT 'Название позиции',
-	created_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания строки',
-	updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время обновления строки'
-) COMMENT 'Позиции';
+	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'РРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ СЃС‚СЂРѕРєРё',
+	name VARCHAR(255) NOT NULL COMMENT 'РќР°Р·РІР°РЅРёРµ РїРѕР·РёС†РёРё',
+	created_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Р’СЂРµРјСЏ СЃРѕР·РґР°РЅРёСЏ СЃС‚СЂРѕРєРё',
+	updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Р’СЂРµРјСЏ РѕР±РЅРѕРІР»РµРЅРёСЏ СЃС‚СЂРѕРєРё'
+) COMMENT 'РџРѕР·РёС†РёРё';
 
 -- -----------------6-----------------
--- Создаем таблицу амплуа игроков
+-- РЎРѕР·РґР°РµРј С‚Р°Р±Р»РёС†Сѓ Р°РјРїР»СѓР° РёРіСЂРѕРєРѕРІ
 DROP TABLE IF EXISTS amplua;
 CREATE TABLE amplua (
-	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'Идентификатор строки',
-	position_id TINYINT UNSIGNED NOT NULL COMMENT 'Ссылка на позицию',
-	name VARCHAR(255) NOT NULL COMMENT 'Название амплуа',
-	created_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания строки',
-	updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время обновления строки'
-) COMMENT 'Амплуа';
+	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'РРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ СЃС‚СЂРѕРєРё',
+	position_id TINYINT UNSIGNED NOT NULL COMMENT 'РЎСЃС‹Р»РєР° РЅР° РїРѕР·РёС†РёСЋ',
+	name VARCHAR(255) NOT NULL COMMENT 'РќР°Р·РІР°РЅРёРµ Р°РјРїР»СѓР°',
+	created_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Р’СЂРµРјСЏ СЃРѕР·РґР°РЅРёСЏ СЃС‚СЂРѕРєРё',
+	updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Р’СЂРµРјСЏ РѕР±РЅРѕРІР»РµРЅРёСЏ СЃС‚СЂРѕРєРё'
+) COMMENT 'РђРјРїР»СѓР°';
 
 -- -----------------7-----------------
--- Создаем таблицу чемпионатов
+-- РЎРѕР·РґР°РµРј С‚Р°Р±Р»РёС†Сѓ С‡РµРјРїРёРѕРЅР°С‚РѕРІ
 CREATE TABLE championship (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'Идентификатор строки',
-	name VARCHAR(255) UNIQUE COMMENT 'Название чемпионата',
-	country_id TINYINT UNSIGNED NOT NULL COMMENT 'Ссылка на страну',
-	created_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания строки',
-	updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время обновления строки'
-) COMMENT 'Чемпионаты';
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'РРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ СЃС‚СЂРѕРєРё',
+	name VARCHAR(255) UNIQUE COMMENT 'РќР°Р·РІР°РЅРёРµ С‡РµРјРїРёРѕРЅР°С‚Р°',
+	country_id TINYINT UNSIGNED NOT NULL COMMENT 'РЎСЃС‹Р»РєР° РЅР° СЃС‚СЂР°РЅСѓ',
+	created_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Р’СЂРµРјСЏ СЃРѕР·РґР°РЅРёСЏ СЃС‚СЂРѕРєРё',
+	updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Р’СЂРµРјСЏ РѕР±РЅРѕРІР»РµРЅРёСЏ СЃС‚СЂРѕРєРё'
+) COMMENT 'Р§РµРјРїРёРѕРЅР°С‚С‹';
 
 -- -----------------8-----------------
--- Создаем таблицу игр
+-- РЎРѕР·РґР°РµРј С‚Р°Р±Р»РёС†Сѓ РёРіСЂ
 DROP TABLE IF EXISTS games;
 CREATE TABLE games (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'Идентификатор строки',
-	chemp_id INT UNSIGNED NOT NULL COMMENT 'Идентификатор строки',
-	tour TINYINT UNSIGNED NOT NULL COMMENT 'Номер тура',
-	club_owner_id INT UNSIGNED NOT NULL COMMENT 'Домашняя команда',
-	goals_o TINYINT UNSIGNED DEFAULT NULL COMMENT 'Голы домашней команды', -- значение NULL пока матч не сыгран
-	goals_g TINYINT UNSIGNED DEFAULT NULL COMMENT 'Голы гостевой команды', -- значение NULL пока матч не сыгран
-	club_guest_id INT UNSIGNED NOT NULL COMMENT 'Гостевая команда',
-	created_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания строки',
-	updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время обновления строки'
-) COMMENT 'Игры';
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'РРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ СЃС‚СЂРѕРєРё',
+	chemp_id INT UNSIGNED NOT NULL COMMENT 'РРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ СЃС‚СЂРѕРєРё',
+	tour TINYINT UNSIGNED NOT NULL COMMENT 'РќРѕРјРµСЂ С‚СѓСЂР°',
+	club_owner_id INT UNSIGNED NOT NULL COMMENT 'Р”РѕРјР°С€РЅСЏСЏ РєРѕРјР°РЅРґР°',
+	goals_o TINYINT UNSIGNED DEFAULT NULL COMMENT 'Р“РѕР»С‹ РґРѕРјР°С€РЅРµР№ РєРѕРјР°РЅРґС‹', -- Р·РЅР°С‡РµРЅРёРµ NULL РїРѕРєР° РјР°С‚С‡ РЅРµ СЃС‹РіСЂР°РЅ
+	goals_g TINYINT UNSIGNED DEFAULT NULL COMMENT 'Р“РѕР»С‹ РіРѕСЃС‚РµРІРѕР№ РєРѕРјР°РЅРґС‹', -- Р·РЅР°С‡РµРЅРёРµ NULL РїРѕРєР° РјР°С‚С‡ РЅРµ СЃС‹РіСЂР°РЅ
+	club_guest_id INT UNSIGNED NOT NULL COMMENT 'Р“РѕСЃС‚РµРІР°СЏ РєРѕРјР°РЅРґР°',
+	created_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Р’СЂРµРјСЏ СЃРѕР·РґР°РЅРёСЏ СЃС‚СЂРѕРєРё',
+	updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Р’СЂРµРјСЏ РѕР±РЅРѕРІР»РµРЅРёСЏ СЃС‚СЂРѕРєРё'
+) COMMENT 'РРіСЂС‹';
 
 -- -----------------9-----------------
--- Создаем таблицу событий матча
+-- РЎРѕР·РґР°РµРј С‚Р°Р±Р»РёС†Сѓ СЃРѕР±С‹С‚РёР№ РјР°С‚С‡Р°
 DROP TABLE IF EXISTS march_events;
 CREATE TABLE march_events(
-	game_id INT UNSIGNED NOT NULL COMMENT 'Ссылка на мач',
-	player_id INT UNSIGNED NOT NULL COMMENT 'Ссылка на пользователя',
-	goal INT UNSIGNED NOT NULL DEFAULT 0 COMMENT 'Гол',
-	assist INT UNSIGNED NOT NULL DEFAULT 0 COMMENT 'Голевой пас',
-	yellow_card BOOL DEFAULT 0 COMMENT 'желтая карточка',
-	red_card BOOL DEFAULT 0 COMMENT 'красная карточка',
-	created_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания строки',
-	updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время обновления строки'
-) COMMENT 'Cобытия матча';
+	game_id INT UNSIGNED NOT NULL COMMENT 'РЎСЃС‹Р»РєР° РЅР° РјР°С‡',
+	player_id INT UNSIGNED NOT NULL COMMENT 'РЎСЃС‹Р»РєР° РЅР° РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ',
+	goal INT UNSIGNED NOT NULL DEFAULT 0 COMMENT 'Р“РѕР»',
+	assist INT UNSIGNED NOT NULL DEFAULT 0 COMMENT 'Р“РѕР»РµРІРѕР№ РїР°СЃ',
+	yellow_card BOOL DEFAULT 0 COMMENT 'Р¶РµР»С‚Р°СЏ РєР°СЂС‚РѕС‡РєР°',
+	red_card BOOL DEFAULT 0 COMMENT 'РєСЂР°СЃРЅР°СЏ РєР°СЂС‚РѕС‡РєР°',
+	created_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Р’СЂРµРјСЏ СЃРѕР·РґР°РЅРёСЏ СЃС‚СЂРѕРєРё',
+	updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Р’СЂРµРјСЏ РѕР±РЅРѕРІР»РµРЅРёСЏ СЃС‚СЂРѕРєРё'
+) COMMENT 'CРѕР±С‹С‚РёСЏ РјР°С‚С‡Р°';
