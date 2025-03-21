@@ -2,14 +2,14 @@ USE football;
 
 DELIMITER //
 
--- Заполним таблицу march_events 11ю лучшими игроками каждой из команд участников матча.
+-- Р—Р°РїРѕР»РЅРёРј С‚Р°Р±Р»РёС†Сѓ march_events 11СЋ Р»СѓС‡С€РёРјРё РёРіСЂРѕРєР°РјРё РєР°Р¶РґРѕР№ РёР· РєРѕРјР°РЅРґ СѓС‡Р°СЃС‚РЅРёРєРѕРІ РјР°С‚С‡Р°.
 DROP PROCEDURE IF EXISTS write_march_events//
 CREATE PROCEDURE write_march_events(IN id INT)
 BEGIN
-	-- Заполним таблицу march_events 11ю лучшими игроками каждой из команд участников матча.
+	-- Р—Р°РїРѕР»РЅРёРј С‚Р°Р±Р»РёС†Сѓ march_events 11СЋ Р»СѓС‡С€РёРјРё РёРіСЂРѕРєР°РјРё РєР°Р¶РґРѕР№ РёР· РєРѕРјР°РЅРґ СѓС‡Р°СЃС‚РЅРёРєРѕРІ РјР°С‚С‡Р°.
 	DECLARE i INT DEFAULT 0;
 	WHILE i < 11 DO
-	-- Игроки домашней команды
+	-- РРіСЂРѕРєРё РґРѕРјР°С€РЅРµР№ РєРѕРјР°РЅРґС‹
 		INSERT INTO march_events (game_id, player_id) VALUES (
 			id, (
 			SELECT players.id 
@@ -18,7 +18,7 @@ BEGIN
 			WHERE games.id = id 
 			ORDER BY skill DESC
 			LIMIT i, 1));
-	-- Игроки гостевой команды
+	-- РРіСЂРѕРєРё РіРѕСЃС‚РµРІРѕР№ РєРѕРјР°РЅРґС‹
 		INSERT INTO march_events (game_id, player_id) VALUES (
 			id, (
 			SELECT players.id 
@@ -31,8 +31,8 @@ BEGIN
 	END WHILE;
 END//
 
--- Функция rand_player_game извлекает произвольного игрока из таблицы march_events по номеру матча
--- аргумент club указывает на команду хозяин/гость
+-- Р¤СѓРЅРєС†РёСЏ rand_player_game РёР·РІР»РµРєР°РµС‚ РїСЂРѕРёР·РІРѕР»СЊРЅРѕРіРѕ РёРіСЂРѕРєР° РёР· С‚Р°Р±Р»РёС†С‹ march_events РїРѕ РЅРѕРјРµСЂСѓ РјР°С‚С‡Р°
+-- Р°СЂРіСѓРјРµРЅС‚ club СѓРєР°Р·С‹РІР°РµС‚ РЅР° РєРѕРјР°РЅРґСѓ С…РѕР·СЏРёРЅ/РіРѕСЃС‚СЊ
 DROP FUNCTION IF EXISTS rand_player_game//
 CREATE FUNCTION rand_player_game (id INT , club INT(1))
 RETURNS INT READS SQL DATA
@@ -43,22 +43,22 @@ BEGIN
 	ON march_events.player_id = players.id AND march_events.game_id = games.id
 	WHERE game_id = id AND
  		CASE	
-			WHEN club =  1 THEN players.club_id = games.club_owner_id -- Для принимающей команды
-			WHEN club =  0 THEN players.club_id = games.club_guest_id -- Для команды гостей
+			WHEN club =  1 THEN players.club_id = games.club_owner_id -- Р”Р»СЏ РїСЂРёРЅРёРјР°СЋС‰РµР№ РєРѕРјР°РЅРґС‹
+			WHEN club =  0 THEN players.club_id = games.club_guest_id -- Р”Р»СЏ РєРѕРјР°РЅРґС‹ РіРѕСЃС‚РµР№
 		END
 	ORDER BY RAND()
 	LIMIT 1);
 END//
 
--- Процедура заполнения таблицы march_events голов, голевых передач, желтых и красных карточек
+-- РџСЂРѕС†РµРґСѓСЂР° Р·Р°РїРѕР»РЅРµРЅРёСЏ С‚Р°Р±Р»РёС†С‹ march_events РіРѕР»РѕРІ, РіРѕР»РµРІС‹С… РїРµСЂРµРґР°С‡, Р¶РµР»С‚С‹С… Рё РєСЂР°СЃРЅС‹С… РєР°СЂС‚РѕС‡РµРє
 DROP PROCEDURE IF EXISTS update_march_events//
 CREATE PROCEDURE update_march_events(IN id INT)
 BEGIN
 	DECLARE goal_owner INT DEFAULT 0;
 	DECLARE goal_guest INT DEFAULT 0;
-	DECLARE yellow_cards INT DEFAULT FLOOR(0 + RAND()*7); -- Не более 6 желтых карточек за матч
-	DECLARE red_cards INT DEFAULT FLOOR(0 + RAND()*2); -- Не более 1 красной карточки за матч
-	-- Голы и передачи домашней команды
+	DECLARE yellow_cards INT DEFAULT FLOOR(0 + RAND()*7); -- РќРµ Р±РѕР»РµРµ 6 Р¶РµР»С‚С‹С… РєР°СЂС‚РѕС‡РµРє Р·Р° РјР°С‚С‡
+	DECLARE red_cards INT DEFAULT FLOOR(0 + RAND()*2); -- РќРµ Р±РѕР»РµРµ 1 РєСЂР°СЃРЅРѕР№ РєР°СЂС‚РѕС‡РєРё Р·Р° РјР°С‚С‡
+	-- Р“РѕР»С‹ Рё РїРµСЂРµРґР°С‡Рё РґРѕРјР°С€РЅРµР№ РєРѕРјР°РЅРґС‹
 	WHILE goal_owner < (SELECT goals_o FROM games g WHERE g.id = id) DO
 		SET @player_id = (SELECT rand_player_game(id, 1));
 		UPDATE march_events SET
@@ -70,7 +70,7 @@ BEGIN
 		WHERE game_id = id AND player_id = @player_id;
 		SET goal_owner = goal_owner + 1;
 	END WHILE;
-	-- Голы и передачи гостевой команды
+	-- Р“РѕР»С‹ Рё РїРµСЂРµРґР°С‡Рё РіРѕСЃС‚РµРІРѕР№ РєРѕРјР°РЅРґС‹
 	WHILE goal_guest < (SELECT goals_g FROM games g WHERE g.id = id) DO
 		SET @player_id = (SELECT rand_player_game(id, 0));
 		UPDATE march_events SET
@@ -82,7 +82,7 @@ BEGIN
 		WHERE game_id = id AND player_id = @player_id;
 		SET goal_guest = goal_guest + 1;
 	END WHILE;
-	-- Желтые карточки
+	-- Р–РµР»С‚С‹Рµ РєР°СЂС‚РѕС‡РєРё
 	WHILE yellow_cards > 0 DO
 		SET @player_id = (SELECT rand_player_game(id, 1));
 		UPDATE march_events SET
@@ -94,7 +94,7 @@ BEGIN
 		WHERE game_id = id AND player_id = @player_id;
 		SET yellow_cards = yellow_cards - 1;
 	END WHILE;
-	-- Красные карточки
+	-- РљСЂР°СЃРЅС‹Рµ РєР°СЂС‚РѕС‡РєРё
 	WHILE red_cards > 0 DO
 		SET @player_id = (SELECT rand_player_game(id, 1));
 		UPDATE march_events SET
