@@ -1,22 +1,22 @@
--- Добавляем внешние ключи в БД football
+-- Р”РѕР±Р°РІР»СЏРµРј РІРЅРµС€РЅРёРµ РєР»СЋС‡Рё РІ Р‘Р” football
 
 use football;
 
 
--- 1. Для таблицы клубов
--- Смотрим структуру таблицы
+-- 1. Р”Р»СЏ С‚Р°Р±Р»РёС†С‹ РєР»СѓР±РѕРІ
+-- РЎРјРѕС‚СЂРёРј СЃС‚СЂСѓРєС‚СѓСЂСѓ С‚Р°Р±Р»РёС†С‹
 -- DESC clubs;
 
--- Добавляем внешние ключи
+-- Р”РѕР±Р°РІР»СЏРµРј РІРЅРµС€РЅРёРµ РєР»СЋС‡Рё
 ALTER TABLE clubs
 	ADD CONSTRAINT clubs_country_id_fk
 		FOREIGN KEY (country_id) REFERENCES countrys(id);
 
--- 2. Для таблицы игроков
--- Смотрим структуру таблицы
+-- 2. Р”Р»СЏ С‚Р°Р±Р»РёС†С‹ РёРіСЂРѕРєРѕРІ
+-- РЎРјРѕС‚СЂРёРј СЃС‚СЂСѓРєС‚СѓСЂСѓ С‚Р°Р±Р»РёС†С‹
 -- DESC players;
 
--- Добавляем внешние ключи
+-- Р”РѕР±Р°РІР»СЏРµРј РІРЅРµС€РЅРёРµ РєР»СЋС‡Рё
 ALTER TABLE players 
 	ADD CONSTRAINT players_country_id_fk
 		FOREIGN KEY (country_id) REFERENCES countrys(id),
@@ -27,40 +27,40 @@ ALTER TABLE players
 	ADD CONSTRAINT players_amplua_id_fk
 		FOREIGN KEY (amplua_id) REFERENCES amplua(id);
 	
--- 3. Для таблицы профилей
--- Смотрим структуру таблицы
+-- 3. Р”Р»СЏ С‚Р°Р±Р»РёС†С‹ РїСЂРѕС„РёР»РµР№
+-- РЎРјРѕС‚СЂРёРј СЃС‚СЂСѓРєС‚СѓСЂСѓ С‚Р°Р±Р»РёС†С‹
 -- DESC profiles;
 
--- Добавляем внешние ключи
+-- Р”РѕР±Р°РІР»СЏРµРј РІРЅРµС€РЅРёРµ РєР»СЋС‡Рё
 ALTER TABLE profiles
 	ADD CONSTRAINT profiles_player_id_fk
 		FOREIGN KEY (player_id) REFERENCES players(id)
 			ON DELETE CASCADE;
 
--- 6. Для таблицы профилей
--- Смотрим структуру таблицы
+-- 6. Р”Р»СЏ С‚Р°Р±Р»РёС†С‹ РїСЂРѕС„РёР»РµР№
+-- РЎРјРѕС‚СЂРёРј СЃС‚СЂСѓРєС‚СѓСЂСѓ С‚Р°Р±Р»РёС†С‹
 -- DESC amplua;
 
--- Добавляем внешние ключи
+-- Р”РѕР±Р°РІР»СЏРµРј РІРЅРµС€РЅРёРµ РєР»СЋС‡Рё
 ALTER TABLE amplua
 	ADD CONSTRAINT amplua_position_id_fk
 		FOREIGN KEY (position_id) REFERENCES positions(id);
 		
--- 7. Для таблицы чемпионата
--- Смотрим структуру таблицы
+-- 7. Р”Р»СЏ С‚Р°Р±Р»РёС†С‹ С‡РµРјРїРёРѕРЅР°С‚Р°
+-- РЎРјРѕС‚СЂРёРј СЃС‚СЂСѓРєС‚СѓСЂСѓ С‚Р°Р±Р»РёС†С‹
 -- DESC championship;
 
--- Добавляем внешние ключи
+-- Р”РѕР±Р°РІР»СЏРµРј РІРЅРµС€РЅРёРµ РєР»СЋС‡Рё
 ALTER TABLE championship
 	ADD CONSTRAINT championship_country_id_fk
 		FOREIGN KEY (country_id) REFERENCES countrys(id)
 			ON DELETE CASCADE;
 
--- 8. Для таблицы игр
--- Смотрим структуру таблицы
+-- 8. Р”Р»СЏ С‚Р°Р±Р»РёС†С‹ РёРіСЂ
+-- РЎРјРѕС‚СЂРёРј СЃС‚СЂСѓРєС‚СѓСЂСѓ С‚Р°Р±Р»РёС†С‹
 -- DESC games;
 
--- Добавляем внешние ключи
+-- Р”РѕР±Р°РІР»СЏРµРј РІРЅРµС€РЅРёРµ РєР»СЋС‡Рё
 ALTER TABLE games
 	ADD CONSTRAINT games_club_owner_id_fk
 		FOREIGN KEY (club_owner_id) REFERENCES clubs(id)
@@ -69,11 +69,11 @@ ALTER TABLE games
 		FOREIGN KEY (club_guest_id) REFERENCES clubs(id)
 			ON DELETE CASCADE;
 
--- 9. Для таблицы событий матча
--- Смотрим структуру таблицы
+-- 9. Р”Р»СЏ С‚Р°Р±Р»РёС†С‹ СЃРѕР±С‹С‚РёР№ РјР°С‚С‡Р°
+-- РЎРјРѕС‚СЂРёРј СЃС‚СЂСѓРєС‚СѓСЂСѓ С‚Р°Р±Р»РёС†С‹
 -- DESC march_events;
 
--- Добавляем внешние ключи
+-- Р”РѕР±Р°РІР»СЏРµРј РІРЅРµС€РЅРёРµ РєР»СЋС‡Рё
 ALTER TABLE march_events
 	ADD CONSTRAINT march_events_game_id_fk
 		FOREIGN KEY (game_id) REFERENCES games(id)
